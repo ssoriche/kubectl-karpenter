@@ -1,0 +1,47 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: karpenter
+spec:
+  version: v0.1.0
+  homepage: https://github.com/ssoriche/kubectl-karpenter
+  shortDescription: Show Karpenter NodePool resource utilization
+  description: |
+    Displays a summary of Karpenter NodePools with node counts and
+    CPU/memory request utilization shown as ASCII bar charts.
+  platforms:
+    - selector:
+        matchLabels:
+          os: linux
+          arch: amd64
+      uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/v0.1.0/kubectl-karpenter_linux_amd64.tar.gz
+      sha256: "PLACEHOLDER"
+      bin: kubectl-karpenter
+    - selector:
+        matchLabels:
+          os: linux
+          arch: arm64
+      uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/v0.1.0/kubectl-karpenter_linux_arm64.tar.gz
+      sha256: "PLACEHOLDER"
+      bin: kubectl-karpenter
+    - selector:
+        matchLabels:
+          os: darwin
+          arch: amd64
+      uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/v0.1.0/kubectl-karpenter_darwin_amd64.tar.gz
+      sha256: "PLACEHOLDER"
+      bin: kubectl-karpenter
+    - selector:
+        matchLabels:
+          os: darwin
+          arch: arm64
+      uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/v0.1.0/kubectl-karpenter_darwin_arm64.tar.gz
+      sha256: "PLACEHOLDER"
+      bin: kubectl-karpenter
+    - selector:
+        matchLabels:
+          os: windows
+          arch: amd64
+      uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/v0.1.0/kubectl-karpenter_windows_amd64.zip
+      sha256: "PLACEHOLDER"
+      bin: kubectl-karpenter.exe
