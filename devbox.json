@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.1/.schema/devbox.schema.json",
+  "packages": [
+    "go@1.25",
+    "golangci-lint@latest",
+    "goreleaser@latest",
+    "kubectl@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "echo 'kubectl-karpenter development environment ready'",
+      "echo 'Go version:' $(go version)"
+    ],
+    "scripts": {
+      "build": "make build",
+      "test": "make test",
+      "lint": "make lint",
+      "check": "make check"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+version: 2
+
+project_name: kubectl-karpenter
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - id: kubectl-karpenter
+    binary: kubectl-karpenter
+    main: ./cmd/kubectl-karpenter
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+
+archives:
+  - id: default
+    format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+      - "^chore:"
+
+release:
+  github:
+    owner: ssoriche
+    name: kubectl-karpenter
+  draft: false
+  prerelease: auto
+  mode: append
+  footer: |
+    ## Installation
+
+    ### Via krew (recommended)
+    ```bash
+    kubectl krew install karpenter
+    ```
+
+    ### Manual installation
+    Download the appropriate binary for your platform, extract it, and place it in your PATH.
+
+    ```bash
+    # Example for macOS (Apple Silicon)
+    tar -xzf kubectl-karpenter_darwin_arm64.tar.gz
+    chmod +x kubectl-karpenter
+    sudo mv kubectl-karpenter /usr/local/bin/
+    ```
