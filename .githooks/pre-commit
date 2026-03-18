@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Running pre-commit checks..."
+
+# Vet
+echo "  Vetting..."
+go vet ./...
+
+# Lint
+echo "  Linting..."
+golangci-lint run ./...
+
+# Test
+echo "  Testing..."
+go test -race ./...
+
+echo "All pre-commit checks passed."

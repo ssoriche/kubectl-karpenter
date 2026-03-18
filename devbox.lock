@@ -1,0 +1,237 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "last_modified": "2026-03-08T08:02:12Z",
+      "resolved": "github:NixOS/nixpkgs/608d0cadfed240589a7eea422407a547ad626a14?lastModified=1772956932&narHash=sha256-M0yS4AafhKxPPmOHGqIV0iKxgNO8bHDWdl1kOwGBwRY%3D"
+    },
+    "go@1.23": {
+      "last_modified": "2025-08-08T08:05:48Z",
+      "resolved": "github:NixOS/nixpkgs/a3f3e3f2c983e957af6b07a1db98bafd1f87b7a1#go_1_23",
+      "source": "devbox-search",
+      "version": "1.23.12",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ls7j3c95gdy2s5zzlzy751zgly53gs4c-go-1.23.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ls7j3c95gdy2s5zzlzy751zgly53gs4c-go-1.23.12"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/482v99lr94jxbx0c44dyydhxjhzs8na1-go-1.23.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/482v99lr94jxbx0c44dyydhxjhzs8na1-go-1.23.12"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4xnvg72xnfsyrm426wn91rb594s507ja-go-1.23.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4xnvg72xnfsyrm426wn91rb594s507ja-go-1.23.12"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/nmmw1c5mwf7mzlbk5rnpm1gxvzh6jjw4-go-1.23.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/nmmw1c5mwf7mzlbk5rnpm1gxvzh6jjw4-go-1.23.12"
+        }
+      }
+    },
+    "golangci-lint@latest": {
+      "last_modified": "2026-03-11T04:01:32Z",
+      "resolved": "github:NixOS/nixpkgs/b6067cc0127d4db9c26c79e4de0513e58d0c40c9#golangci-lint",
+      "source": "devbox-search",
+      "version": "2.11.3",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/zalxgqwyng4jdbv5cpsmm9xbmim9hjjj-golangci-lint-2.11.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/zalxgqwyng4jdbv5cpsmm9xbmim9hjjj-golangci-lint-2.11.3"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/mbra9idrmw8f8a4sqv2d0bf6vw8gcmfp-golangci-lint-2.11.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/mbra9idrmw8f8a4sqv2d0bf6vw8gcmfp-golangci-lint-2.11.3"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ph64c01zwvbr9xvxydxa8ijvbdfax8fy-golangci-lint-2.11.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ph64c01zwvbr9xvxydxa8ijvbdfax8fy-golangci-lint-2.11.3"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/i1xcg5f24w70llk4v6lzi0vi4jf3ma5k-golangci-lint-2.11.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/i1xcg5f24w70llk4v6lzi0vi4jf3ma5k-golangci-lint-2.11.3"
+        }
+      }
+    },
+    "goreleaser@latest": {
+      "last_modified": "2026-02-23T15:40:43Z",
+      "resolved": "github:NixOS/nixpkgs/80d901ec0377e19ac3f7bb8c035201e2e098cc97#goreleaser",
+      "source": "devbox-search",
+      "version": "2.13.3",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/hjkjsjcjvmi8cw5lwz60954l23jpz1s4-goreleaser-2.13.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/hjkjsjcjvmi8cw5lwz60954l23jpz1s4-goreleaser-2.13.3"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/h4mfplvbfw8mvdwjqkc6db5i839zv2nd-goreleaser-2.13.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/h4mfplvbfw8mvdwjqkc6db5i839zv2nd-goreleaser-2.13.3"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/axrk518ycwgnqwqljmaf67isndcf506j-goreleaser-2.13.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/axrk518ycwgnqwqljmaf67isndcf506j-goreleaser-2.13.3"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/naggjmmkqzl3j3f463jzc258844003w4-goreleaser-2.13.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/naggjmmkqzl3j3f463jzc258844003w4-goreleaser-2.13.3"
+        }
+      }
+    },
+    "kubectl@latest": {
+      "last_modified": "2026-03-12T22:11:02Z",
+      "resolved": "github:NixOS/nixpkgs/24f4544180242cd80bb2492ce6907243bc716e08#kubectl",
+      "source": "devbox-search",
+      "version": "1.35.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/mkd1avr61r30gbfb4n0z4mj5913yh9mk-kubectl-1.35.2",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/vagy3nj2pa5b9yp8r7flq6wr28i8q6c0-kubectl-1.35.2-man",
+              "default": true
+            },
+            {
+              "name": "convert",
+              "path": "/nix/store/dwmv3h7b5zp6qiznr8zav9xqg5hcfi2v-kubectl-1.35.2-convert"
+            }
+          ],
+          "store_path": "/nix/store/mkd1avr61r30gbfb4n0z4mj5913yh9mk-kubectl-1.35.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/vxnmjnsdsgnnvgvdl4qbhmg3nawypcc4-kubectl-1.35.2",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/1zmldjbz9zsavgl25n7jsg0i6wjqn2ka-kubectl-1.35.2-man",
+              "default": true
+            },
+            {
+              "name": "convert",
+              "path": "/nix/store/nrx47hadz5jlarh5709a82fgw6v0kd1c-kubectl-1.35.2-convert"
+            }
+          ],
+          "store_path": "/nix/store/vxnmjnsdsgnnvgvdl4qbhmg3nawypcc4-kubectl-1.35.2"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/lm4das1r72pbn5bpqwhjisyx2a1cqvzw-kubectl-1.35.2",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/sadazjva7b450x1jy871j01fhanjy8lz-kubectl-1.35.2-man",
+              "default": true
+            },
+            {
+              "name": "convert",
+              "path": "/nix/store/xlvvcxcp4q28shl9fmg3wcyfg33rfk9y-kubectl-1.35.2-convert"
+            }
+          ],
+          "store_path": "/nix/store/lm4das1r72pbn5bpqwhjisyx2a1cqvzw-kubectl-1.35.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/5kws6h64r04kcwgdqppdw0p6h42i3j02-kubectl-1.35.2",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/7wsa1bdvvc7d5n37jbnmr5rsw89abrzp-kubectl-1.35.2-man",
+              "default": true
+            },
+            {
+              "name": "convert",
+              "path": "/nix/store/50r2dcxxjnrs42sawlsllshf5h57kvwy-kubectl-1.35.2-convert"
+            }
+          ],
+          "store_path": "/nix/store/5kws6h64r04kcwgdqppdw0p6h42i3j02-kubectl-1.35.2"
+        }
+      }
+    }
+  }
+}

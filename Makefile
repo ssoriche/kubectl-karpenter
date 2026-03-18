@@ -4,13 +4,17 @@ BINARY_NAME := kubectl-karpenter
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 LDFLAGS := -s -w -X main.version=$(VERSION)
 
-.PHONY: help build build-all test lint install clean release
+.PHONY: help setup build build-all test lint install clean release
 
 help: ## Show this help message
 	@echo "kubectl-karpenter - Karpenter NodePool resource utilization"
 	@echo ""
 	@echo "Available targets:"
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+setup: ## Set up git hooks for development
+	git config core.hooksPath .githooks
+	@echo "Git hooks configured."
 
 build: ## Build for current platform
 	go build -ldflags "$(LDFLAGS)" -o bin/$(BINARY_NAME) ./cmd/kubectl-karpenter
