@@ -45,11 +45,11 @@ func (p *Printer) PrintTable(pools []collector.NodePoolInfo, total collector.Nod
 	w := tabwriter.NewWriter(p.out, 0, 0, 2, ' ', 0)
 
 	if !p.noHeaders {
-		fmt.Fprintln(w, "NODEPOOL\tNODES\tCPU\tMEM")
+		_, _ = fmt.Fprintln(w, "NODEPOOL\tNODES\tCPU\tMEM")
 	}
 
 	for _, pool := range pools {
-		fmt.Fprintf(w, "%s\t%d\t%s\t%s\n",
+		_, _ = fmt.Fprintf(w, "%s\t%d\t%s\t%s\n",
 			pool.Name,
 			pool.NodeCount,
 			utilization.RenderBar(pool.CPUPercent, barWidth),
@@ -58,9 +58,9 @@ func (p *Printer) PrintTable(pools []collector.NodePoolInfo, total collector.Nod
 	}
 
 	// Separator line
-	fmt.Fprintln(w, strings.Repeat("─", 70))
+	_, _ = fmt.Fprintln(w, strings.Repeat("─", 70))
 
-	fmt.Fprintf(w, "%s\t%d\t%s\t%s\n",
+	_, _ = fmt.Fprintf(w, "%s\t%d\t%s\t%s\n",
 		total.Name,
 		total.NodeCount,
 		utilization.RenderBar(total.CPUPercent, barWidth),
