@@ -32,5 +32,65 @@ jobs:
 
       - name: Update krew manifest
         run: |
-          echo "Krew manifest needs to be updated with new checksums"
-          echo "See deploy/krew/karpenter.yaml"
+          VERSION="${GITHUB_REF_NAME}"
+
+          SHA_LINUX_AMD64=$(grep 'kubectl-karpenter_linux_amd64.tar.gz' dist/checksums.txt | awk '{print $1}')
+          SHA_LINUX_ARM64=$(grep 'kubectl-karpenter_linux_arm64.tar.gz' dist/checksums.txt | awk '{print $1}')
+          SHA_DARWIN_AMD64=$(grep 'kubectl-karpenter_darwin_amd64.tar.gz' dist/checksums.txt | awk '{print $1}')
+          SHA_DARWIN_ARM64=$(grep 'kubectl-karpenter_darwin_arm64.tar.gz' dist/checksums.txt | awk '{print $1}')
+          SHA_WINDOWS_AMD64=$(grep 'kubectl-karpenter_windows_amd64.zip' dist/checksums.txt | awk '{print $1}')
+
+          cat > deploy/krew/karpenter.yaml <<EOF
+          apiVersion: krew.googlecontainertools.github.com/v1alpha2
+          kind: Plugin
+          metadata:
+            name: karpenter
+          spec:
+            version: ${VERSION}
+            homepage: https://github.com/ssoriche/kubectl-karpenter
+            shortDescription: Show Karpenter NodePool resource utilization
+            description: |
+              Displays a summary of Karpenter NodePools with node counts and
+              CPU/memory request utilization shown as ASCII bar charts.
+            platforms:
+              - selector:
+                  matchLabels:
+                    os: linux
+                    arch: amd64
+                uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/${VERSION}/kubectl-karpenter_linux_amd64.tar.gz
+                sha256: "${SHA_LINUX_AMD64}"
+                bin: kubectl-karpenter
+              - selector:
+                  matchLabels:
+                    os: linux
+                    arch: arm64
+                uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/${VERSION}/kubectl-karpenter_linux_arm64.tar.gz
+                sha256: "${SHA_LINUX_ARM64}"
+                bin: kubectl-karpenter
+              - selector:
+                  matchLabels:
+                    os: darwin
+                    arch: amd64
+                uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/${VERSION}/kubectl-karpenter_darwin_amd64.tar.gz
+                sha256: "${SHA_DARWIN_AMD64}"
+                bin: kubectl-karpenter
+              - selector:
+                  matchLabels:
+                    os: darwin
+                    arch: arm64
+                uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/${VERSION}/kubectl-karpenter_darwin_arm64.tar.gz
+                sha256: "${SHA_DARWIN_ARM64}"
+                bin: kubectl-karpenter
+              - selector:
+                  matchLabels:
+                    os: windows
+                    arch: amd64
+                uri: https://github.com/ssoriche/kubectl-karpenter/releases/download/${VERSION}/kubectl-karpenter_windows_amd64.zip
+                sha256: "${SHA_WINDOWS_AMD64}"
+                bin: kubectl-karpenter.exe
+          EOF
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add deploy/krew/karpenter.yaml
+          git diff --staged --quiet || (git commit -m "chore: update krew manifest for ${VERSION}" && git push origin HEAD:main)
