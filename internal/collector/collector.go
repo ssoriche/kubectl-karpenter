@@ -11,6 +11,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	"github.com/ssoriche/kubectl-karpenter/internal/karpenter"
+	"github.com/ssoriche/kubectl-karpenter/internal/utilization"
 )
 
 // NodePoolInfo contains aggregated utilization for a single NodePool.
@@ -114,31 +115,14 @@ func Aggregate(nodes []corev1.Node, podsByNode map[string][]corev1.Pod) []NodePo
 				info.memAllocatable.Add(allocMem)
 			}
 
-			// Sum pod requests for this node
+			// Sum effective pod requests for this node
 			for _, pod := range podsByNode[node.Name] {
 				if pod.Status.Phase == corev1.PodSucceeded || pod.Status.Phase == corev1.PodFailed {
 					continue
 				}
-				for _, c := range pod.Spec.Containers {
-					if c.Resources.Requests != nil {
-						if cpu, ok := c.Resources.Requests[corev1.ResourceCPU]; ok {
-							info.cpuRequests.Add(cpu)
-						}
-						if mem, ok := c.Resources.Requests[corev1.ResourceMemory]; ok {
-							info.memRequests.Add(mem)
-						}
-					}
-				}
-				for _, c := range pod.Spec.InitContainers {
-					if c.Resources.Requests != nil {
-						if cpu, ok := c.Resources.Requests[corev1.ResourceCPU]; ok {
-							info.cpuRequests.Add(cpu)
-						}
-						if mem, ok := c.Resources.Requests[corev1.ResourceMemory]; ok {
-							info.memRequests.Add(mem)
-						}
-					}
-				}
+				cpu, mem := utilization.EffectivePodRequests(&pod)
+				info.cpuRequests.Add(cpu)
+				info.memRequests.Add(mem)
 			}
 		}
 
