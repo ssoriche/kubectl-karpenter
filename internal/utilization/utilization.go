@@ -22,30 +22,13 @@ func CalculateNodeUtilization(node *corev1.Node, pods []corev1.Pod) (cpuPercent,
 	}
 
 	var totalCPU, totalMem resource.Quantity
-	for _, pod := range pods {
-		if pod.Status.Phase == corev1.PodSucceeded || pod.Status.Phase == corev1.PodFailed {
+	for i := range pods {
+		if pods[i].Status.Phase == corev1.PodSucceeded || pods[i].Status.Phase == corev1.PodFailed {
 			continue
 		}
-		for _, c := range pod.Spec.Containers {
-			if c.Resources.Requests != nil {
-				if cpu, ok := c.Resources.Requests[corev1.ResourceCPU]; ok {
-					totalCPU.Add(cpu)
-				}
-				if mem, ok := c.Resources.Requests[corev1.ResourceMemory]; ok {
-					totalMem.Add(mem)
-				}
-			}
-		}
-		for _, c := range pod.Spec.InitContainers {
-			if c.Resources.Requests != nil {
-				if cpu, ok := c.Resources.Requests[corev1.ResourceCPU]; ok {
-					totalCPU.Add(cpu)
-				}
-				if mem, ok := c.Resources.Requests[corev1.ResourceMemory]; ok {
-					totalMem.Add(mem)
-				}
-			}
-		}
+		cpu, mem := EffectivePodRequests(&pods[i])
+		totalCPU.Add(cpu)
+		totalMem.Add(mem)
 	}
 
 	cpuPercent = percentage(totalCPU, *allocatableCPU)

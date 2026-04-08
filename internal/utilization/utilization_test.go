@@ -86,6 +86,86 @@ func TestCalculateNodeUtilization(t *testing.T) {
 			expectedMem: 0,
 		},
 		{
+			name: "regular init container larger than regular",
+			node: &corev1.Node{
+				Status: corev1.NodeStatus{
+					Allocatable: corev1.ResourceList{
+						corev1.ResourceCPU:    resource.MustParse("4"),
+						corev1.ResourceMemory: resource.MustParse("8Gi"),
+					},
+				},
+			},
+			pods: []corev1.Pod{
+				{
+					Status: corev1.PodStatus{Phase: corev1.PodRunning},
+					Spec: corev1.PodSpec{
+						InitContainers: []corev1.Container{{
+							Resources: corev1.ResourceRequirements{
+								Requests: corev1.ResourceList{
+									corev1.ResourceCPU:    resource.MustParse("1"),
+									corev1.ResourceMemory: resource.MustParse("4Gi"),
+								},
+							},
+						}},
+						Containers: []corev1.Container{{
+							Resources: corev1.ResourceRequirements{
+								Requests: corev1.ResourceList{
+									corev1.ResourceCPU:    resource.MustParse("500m"),
+									corev1.ResourceMemory: resource.MustParse("2Gi"),
+								},
+							},
+						}},
+					},
+				},
+			},
+			// Effective = max(init=1, regular=500m) = 1 CPU -> 25%
+			expectedCPU: 25,
+			// Effective = max(init=4Gi, regular=2Gi) = 4Gi -> 50%
+			expectedMem: 50,
+		},
+		{
+			name: "sidecar init container adds to regular",
+			node: &corev1.Node{
+				Status: corev1.NodeStatus{
+					Allocatable: corev1.ResourceList{
+						corev1.ResourceCPU:    resource.MustParse("4"),
+						corev1.ResourceMemory: resource.MustParse("8Gi"),
+					},
+				},
+			},
+			pods: func() []corev1.Pod {
+				restartAlways := corev1.ContainerRestartPolicyAlways
+				return []corev1.Pod{
+					{
+						Status: corev1.PodStatus{Phase: corev1.PodRunning},
+						Spec: corev1.PodSpec{
+							InitContainers: []corev1.Container{{
+								RestartPolicy: &restartAlways,
+								Resources: corev1.ResourceRequirements{
+									Requests: corev1.ResourceList{
+										corev1.ResourceCPU:    resource.MustParse("1"),
+										corev1.ResourceMemory: resource.MustParse("2Gi"),
+									},
+								},
+							}},
+							Containers: []corev1.Container{{
+								Resources: corev1.ResourceRequirements{
+									Requests: corev1.ResourceList{
+										corev1.ResourceCPU:    resource.MustParse("1"),
+										corev1.ResourceMemory: resource.MustParse("2Gi"),
+									},
+								},
+							}},
+						},
+					},
+				}
+			}(),
+			// Effective = sidecar(1) + regular(1) = 2 CPU -> 50%
+			expectedCPU: 50,
+			// Effective = sidecar(2Gi) + regular(2Gi) = 4Gi -> 50%
+			expectedMem: 50,
+		},
+		{
 			name: "nil allocatable",
 			node: &corev1.Node{
 				Status: corev1.NodeStatus{},

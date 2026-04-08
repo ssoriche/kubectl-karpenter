@@ -137,6 +137,93 @@ func TestAggregate(t *testing.T) {
 	}
 }
 
+func TestAggregateWithInitContainers(t *testing.T) {
+	restartAlways := corev1.ContainerRestartPolicyAlways
+
+	nodes := []corev1.Node{
+		{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:   "node-1",
+				Labels: map[string]string{"karpenter.sh/nodepool": "default"},
+			},
+			Status: corev1.NodeStatus{
+				Allocatable: corev1.ResourceList{
+					corev1.ResourceCPU:    resource.MustParse("4"),
+					corev1.ResourceMemory: resource.MustParse("8Gi"),
+				},
+			},
+		},
+	}
+
+	podsByNode := map[string][]corev1.Pod{
+		"node-1": {
+			// Pod with regular init container (1 CPU) larger than regular container (500m)
+			// Effective CPU = max(1, 0.5) = 1 CPU = 25%
+			{
+				Status: corev1.PodStatus{Phase: corev1.PodRunning},
+				Spec: corev1.PodSpec{
+					InitContainers: []corev1.Container{{
+						Resources: corev1.ResourceRequirements{
+							Requests: corev1.ResourceList{
+								corev1.ResourceCPU:    resource.MustParse("1"),
+								corev1.ResourceMemory: resource.MustParse("2Gi"),
+							},
+						},
+					}},
+					Containers: []corev1.Container{{
+						Resources: corev1.ResourceRequirements{
+							Requests: corev1.ResourceList{
+								corev1.ResourceCPU:    resource.MustParse("500m"),
+								corev1.ResourceMemory: resource.MustParse("1Gi"),
+							},
+						},
+					}},
+				},
+			},
+			// Pod with sidecar init container (500m) + regular container (500m)
+			// Effective CPU = sidecar(500m) + regular(500m) = 1 CPU = 25%
+			{
+				Status: corev1.PodStatus{Phase: corev1.PodRunning},
+				Spec: corev1.PodSpec{
+					InitContainers: []corev1.Container{{
+						RestartPolicy: &restartAlways,
+						Resources: corev1.ResourceRequirements{
+							Requests: corev1.ResourceList{
+								corev1.ResourceCPU:    resource.MustParse("500m"),
+								corev1.ResourceMemory: resource.MustParse("1Gi"),
+							},
+						},
+					}},
+					Containers: []corev1.Container{{
+						Resources: corev1.ResourceRequirements{
+							Requests: corev1.ResourceList{
+								corev1.ResourceCPU:    resource.MustParse("500m"),
+								corev1.ResourceMemory: resource.MustParse("1Gi"),
+							},
+						},
+					}},
+				},
+			},
+		},
+	}
+
+	results := Aggregate(nodes, podsByNode)
+
+	if len(results) != 1 {
+		t.Fatalf("expected 1 pool, got %d", len(results))
+	}
+
+	pool := results[0]
+	// Total effective: 1 CPU (init pod) + 1 CPU (sidecar pod) = 2 CPU out of 4 = 50%
+	if pool.CPUPercent != 50 {
+		t.Errorf("expected CPU 50%%, got %d%%", pool.CPUPercent)
+	}
+	// Total effective: 2Gi (init pod) + 2Gi (sidecar pod) = 4Gi out of 8Gi = 50%
+	if pool.MemPercent != 50 {
+		t.Errorf("expected MEM 50%%, got %d%%", pool.MemPercent)
+	}
+}
+
 func TestAggregateTotal(t *testing.T) {
 	pools := []NodePoolInfo{
 		{Name: "a", NodeCount: 3, CPUPercent: 50, MemPercent: 60,
