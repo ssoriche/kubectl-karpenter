@@ -63,13 +63,32 @@ func GetPoolName(node *corev1.Node) (name string, version APIVersion) {
 	return "", APIVersionUnknown
 }
 
+// GetCapacityType returns the capacity type from node labels
+func GetCapacityType(node *corev1.Node) string {
+	if node == nil || node.Labels == nil {
+		return ""
+	}
+	return node.Labels[LabelCapacityType]
+}
+
+// GetInstanceType returns the instance type from node labels
+func GetInstanceType(node *corev1.Node) string {
+	if node == nil || node.Labels == nil {
+		return ""
+	}
+	return node.Labels[LabelInstanceType]
+}
+
 // DeterminePoolColumnHeader returns the appropriate column header based on cluster capabilities
 func (c *ClusterCapabilities) DeterminePoolColumnHeader() string {
+	// If we have v1beta1/v1 CRDs, prefer NODEPOOL
 	if c.HasNodePools || c.HasNodeClaims {
 		return "NODEPOOL"
 	}
+	// If we only have v1alpha5 CRDs, use PROVISIONER
 	if c.HasProvisioners || c.HasMachines {
 		return "PROVISIONER"
 	}
+	// Default to NODEPOOL for non-Karpenter clusters
 	return "NODEPOOL"
 }
