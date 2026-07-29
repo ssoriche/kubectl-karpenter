@@ -1,0 +1,32 @@
+schema-version = "1.13.0"
+
+
+## Install Packages --------------------------------------------------
+##  Go is pinned to 1.26 to satisfy the `go 1.26` directive in go.mod.
+## -------------------------------------------------------------------
+[install]
+go.pkg-path = "go_1_26"
+golangci-lint.pkg-path = "golangci-lint"
+goreleaser.pkg-path = "goreleaser"
+kubectl.pkg-path = "kubectl"
+
+
+## Activation Hook ---------------------------------------------------
+##  Run by bash when you run 'flox activate'.
+## -------------------------------------------------------------------
+[hook]
+on-activate = '''
+  echo 'kubectl-karpenter development environment ready'
+  echo "Go version: $(go version)"
+'''
+
+
+## Other Environment Options -----------------------------------------
+[options]
+# Systems that environment is compatible with
+systems = [
+  "aarch64-darwin",
+  "aarch64-linux",
+  "x86_64-darwin",
+  "x86_64-linux",
+]

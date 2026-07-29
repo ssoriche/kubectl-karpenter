@@ -1,5 +1,31 @@
+# Binaries
 bin/
+*.exe
+/kubectl-karpenter
+
+# Test artifacts
 coverage.out
 coverage.html
-.devbox/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Go
+vendor/
+
+# GoReleaser
+dist/
+
+# Nix
+result
+result-*
+
+# Worktrees
 .worktrees/
