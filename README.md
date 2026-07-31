@@ -72,8 +72,11 @@ Mixed-version clusters are supported during migrations.
 ## Development
 
 ```bash
-# Enter devbox shell
-devbox shell
+# Enter the flox development environment
+flox activate
+
+# ...or use the Nix flake dev shell
+nix develop
 
 # Build
 make build
