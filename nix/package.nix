@@ -26,7 +26,7 @@ in
     ];
   };
 
-  vendorHash = "sha256-JyrEXuI9B1dPhhAtzpiz4s7+T4yUaRBH74PKky9Q4JI=";
+  vendorHash = "sha256-KQk30cu40RQs/vB/EY566qn0nJVt5VR2zkRuIKQOq+o=";
 
   subPackages = [ "cmd/kubectl-karpenter" ];
 
